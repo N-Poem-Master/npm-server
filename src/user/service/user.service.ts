@@ -2,13 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import UserRepository from '../repository/user.repository';
 import RegisterUserDto from '../dto/register-user.dto';
 import User from '../entity/user.entity';
-import {
-  LOGIN_ERROR,
-  USER_CREATE_ERROR,
-  USER_ERROR,
-} from '../repository/error.code';
+import { USER_CREATE_ERROR, USER_ERROR } from '../repository/error.code';
 import NpmException from 'src/exception/NpmException';
 import { hash } from 'bcrypt';
+import UpdateUserDto from '../dto/update-user.dto';
 
 @Injectable()
 class UserService {
@@ -52,6 +49,23 @@ class UserService {
       const findUser = user.toDto();
 
       return findUser;
+    } catch (error) {
+      const { message } = error as NpmException;
+      throw new HttpException(message, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.userRepository.findOneBy({
+        id,
+      });
+      if (!user) {
+        throw new NpmException(USER_ERROR.NOT_FOUND);
+      }
+
+      await this.userRepository.update(id, updateUserDto);
+      return true;
     } catch (error) {
       const { message } = error as NpmException;
       throw new HttpException(message, HttpStatus.NOT_FOUND);
