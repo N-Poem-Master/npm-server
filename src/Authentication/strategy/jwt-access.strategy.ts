@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import JwtPayload from './JwtPayload';
 
 @Injectable()
-class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
+class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt-access-token') {
   constructor(private readonly jwtService: JwtService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -15,7 +15,6 @@ class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     });
   }
   async validate(payload: JwtPayload) {
-    console.log(payload);
     return payload;
   }
 }

@@ -23,7 +23,6 @@ class AuthenticationService {
       });
     } catch (error) {
       const { message } = error as NpmException;
-      console.log(message);
       throw new HttpException(message, HttpStatus.BAD_REQUEST);
     }
   }
