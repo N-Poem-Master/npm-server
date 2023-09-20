@@ -2,7 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import UserRepository from '../repository/user.repository';
 import RegisterUserDto from '../dto/register-user.dto';
 import User from '../entity/user.entity';
-import { USER_CREATE_ERROR } from '../repository/error.code';
+import {
+  LOGIN_ERROR,
+  USER_CREATE_ERROR,
+  USER_ERROR,
+} from '../repository/error.code';
 import NpmException from 'src/exception/NpmException';
 import { hash } from 'bcrypt';
 
@@ -37,18 +41,21 @@ class UserService {
   }
 
   async findById(id: string) {
-    const user = await this.userRepository.findOneBy({
-      id,
-    });
-    if (!user) {
-      throw new HttpException('not found user', HttpStatus.NOT_FOUND);
-    }
+    try {
+      const user = await this.userRepository.findOneBy({
+        id,
+      });
+      if (!user) {
+        throw new NpmException(USER_ERROR.NOT_FOUND);
+      }
 
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
+      const findUser = user.toDto();
+
+      return findUser;
+    } catch (error) {
+      const { message } = error as NpmException;
+      throw new HttpException(message, HttpStatus.NOT_FOUND);
+    }
   }
 }
 

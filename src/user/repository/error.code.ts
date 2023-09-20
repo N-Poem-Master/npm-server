@@ -12,3 +12,10 @@ export const LOGIN_ERROR = {
     message: '아이디 혹은 비밀번호가 잘못 입력되었습니다.',
   },
 };
+
+export const USER_ERROR = {
+  NOT_FOUND: {
+    code: 'NOT_FOUND',
+    message: '등록된 사용자가 아닙니다.',
+  },
+};
