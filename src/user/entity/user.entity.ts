@@ -6,16 +6,16 @@ import GetUserDto from '../dto/get-user.dto';
 @Entity()
 class User extends BaseEntity {
   @PrimaryColumn()
-  public id: string;
+  id: string;
 
   @Column({ unique: true })
-  public email: string;
+  email: string;
 
   @Column()
-  public name: string;
+  name: string;
 
   @Column()
-  public password: string;
+  password: string;
 
   static toEntity(userDto: RegisterUserDto): User {
     const user = new User();
