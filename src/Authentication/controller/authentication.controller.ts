@@ -3,7 +3,8 @@ import { ApiTags } from '@nestjs/swagger/dist';
 import RequestLogin from 'src/authentication/dto/request-login.dto';
 import AuthenticationService from '../service/authentication.service';
 import { Response } from 'express';
-import { JwtGuard } from '../guard';
+
+import { Auth } from '../guard/Auth';
 
 @Controller('auth')
 @ApiTags('사용자 API')
@@ -18,7 +19,7 @@ export class AuthenticationController {
     res.send(true);
   }
 
-  @UseGuards(JwtGuard)
+  @Auth()
   @Get()
   authTest() {
     return true;

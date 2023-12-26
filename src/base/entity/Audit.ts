@@ -5,6 +5,6 @@ export class Audit {
   @Column()
   createdBy;
 
-  @Column
+  @Column()
   createdDate;
 }
